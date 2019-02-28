@@ -1,4 +1,4 @@
-# Docker Installation Guid
+# Docker Installation Guide
 
 ## Resources
 The Following is from here:
