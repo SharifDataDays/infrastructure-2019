@@ -6,7 +6,7 @@ The Following is from here:
 
 
 # Ubuntu Bash
-0. (*optional*) using the GPG key of the official Docker Repository it's possible to validate the downloads:
+* (*optional*) using the GPG key of the official Docker Repository it's possible to validate the downloads:
   1. Add *GPG key* to the system:
   ```bash
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -27,7 +27,7 @@ The Following is from here:
   apt-cache policy docker-ce
   ```
 
-1. Install Docker and check if the deamon service is Correctly and the process is enabled to start on boot:
+* Install Docker and check if the deamon service is Correctly and the process is enabled to start on boot:
   1. Install Docker:
   ```bash
   sudo apt-get install -y docker-ce
