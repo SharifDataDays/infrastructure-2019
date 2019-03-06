@@ -23,10 +23,13 @@ def run_script_list(connection_tuple: tuple, *command_sets, list_results=True) -
         res = ''
         for command in commands:
             try:
-                # res = connection.run(command)
-                print(command)
+                command = command.strip()
+                if not command:
+                    continue
+                res = str(connection.run(command))
             except Exception:
                 results['ok'] = False
+                results['failed_command'] = command
                 return results
 
             if list_results:

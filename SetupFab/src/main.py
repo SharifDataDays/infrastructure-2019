@@ -50,6 +50,17 @@ def read_hosts_file(file_path: str) -> list:
     return hosts
 
 
+def write_report_file(file_path: str, report_list: list):
+    try:
+        file = open(file_path, 'w+')
+        file.writelines(report_list)
+        file.close()
+    except Exception:
+        print('\033[31munable to open reports file : \033[0m', file_path)
+        print('\033[32m\n\nreport : \033[0m\n', end='')
+        print(*report_list, sep='\n')
+
+
 # start connection
 def start_connection(host_name: str, port_number: str, username: str = 'root', password=None) -> tuple:
     """
@@ -57,17 +68,20 @@ def start_connection(host_name: str, port_number: str, username: str = 'root', p
     tuple containing ( fabric.Connection object, host_name, port_name, username)
     else returns None
     """
+    hostname = username + '@' + host_name
+
     try:
-        connection_object = fabric.Connection(host=host_name, user=username, port=int(port_number))
+        connection_object = fabric.Connection(host=hostname, port=int(port_number))
     except Exception:
         return None
+
     return connection_object, host_name, port_number, username
 
 
 # sets file paths and their default values
 def set_file_paths(args: list) -> tuple:
     hosts_file_path = './files/hosts.txt'
-    report_file_path = '../files/output/report.txt'
+    report_file_path = './files/output/report.txt'
 
     try:
         hosts_file_path = args[0]
@@ -82,6 +96,7 @@ def set_file_paths(args: list) -> tuple:
 def run_for_all(action: callable, hosts_file_path: str, reports_path: str, multi_processed=False):
     hosts = read_hosts_file(hosts_file_path)
     connection_list = []
+    reports = []
 
     # creating ssh connections
     for host in hosts:
@@ -90,6 +105,9 @@ def run_for_all(action: callable, hosts_file_path: str, reports_path: str, multi
             connection_list.append(connection_tuple)
         else:
             print('\033[31munable to connect to :  host \033[0m', host[0], '\033[31m port  \033[0m', host[1])
+            reports.append((host[0], host[1], '-> test : connection creation error'))
 
     for connection in connection_list:
-        action(connection)
+        reports.append(action(connection))
+
+    write_report_file(reports_path, reports)
