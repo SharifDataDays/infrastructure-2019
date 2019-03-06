@@ -1,3 +1,6 @@
+def ssh_config(c):
+    c.run('echo -e "PasswordAuthentication yes\n$(cat /etc/ssh/sshd_config)" > "/etc/ssh/sshd_config"')
+    c.run('service ssh reload')
 
 
 # CLI --help & invalid command message
@@ -26,4 +29,3 @@ def command_interpreter(args: list):
             help_command()
 
     exit(0)
-

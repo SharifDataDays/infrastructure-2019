@@ -1,5 +1,9 @@
+# project imports
+from ..main import set_file_paths
+from ..main import run_for_all
 
-
+# app imports
+from .src import app as test_app
 # CLI --help & invalid command message
 def help_command():
     command_name = 'test'
@@ -19,7 +23,12 @@ def command_interpreter(args: list):
     else:
         # checking subcommand options
         if '--all' in args:
-            pass
+            run_for_all(
+                test_app.action,
+                *set_file_paths(
+                    args[args.index('--all') + 1:args.index('--all') + 3]
+                ),
+            )
         elif '--single' in args:
             pass
         else:
