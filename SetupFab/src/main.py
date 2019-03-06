@@ -57,7 +57,7 @@ def write_report_file(file_path: str, report_list: list):
         file.close()
     except Exception:
         print('\033[31munable to open reports file : \033[0m', file_path)
-        print('\033[32m\n\nreport : \033[0m\n', end='')
+        print('\033[32mreport : \033[0m\n', end='')
         print(*report_list, sep='\n')
 
 

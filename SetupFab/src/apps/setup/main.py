@@ -29,3 +29,5 @@ def command_interpreter(args: list):
             help_command()
 
     exit(0)
+
+# pip3 install --ignore-installed tornado==4.5 --user
