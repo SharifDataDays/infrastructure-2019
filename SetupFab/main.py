@@ -2,9 +2,9 @@
 import sys
 
 # subcommands
-from src.setup.main import command_interpreter as setup_command_interpreter
-from src.test.main import command_interpreter as test_command_interpreter
-from src.download.main import command_interpreter as download_command_interpreter
+from src.apps.setup.main import command_interpreter as setup_command_interpreter
+from src.apps.test.main import command_interpreter as test_command_interpreter
+from src.apps.download.main import command_interpreter as download_command_interpreter
 
 
 # CLI --help & invalid command message

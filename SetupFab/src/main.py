@@ -8,7 +8,13 @@ def init_fabric():
 
 
 # load hosts from a file
-def read_hosts_file(file_path: str):
+def read_hosts_file(file_path: str) -> list:
+    """
+    reads a txt file containing ssh commands formatted like:
+        ssh -p <port_number> hostname -L <tunnel>
+    and returns a list of tuples of ( hostname, port_number, tunnel )
+    """
+
     try:
         f = open(file_path, 'r')
     except:
@@ -73,5 +79,17 @@ def set_file_paths(args: list) -> tuple:
 
 
 # run for all
-def run_for_all(action: callable, hosts_file_path: str, reports_path: str):
+def run_for_all(action: callable, hosts_file_path: str, reports_path: str, multi_processed=False):
     hosts = read_hosts_file(hosts_file_path)
+    connection_list = []
+
+    # creating ssh connections
+    for host in hosts:
+        connection_tuple = start_connection(host[0], host[1])
+        if connection_tuple:
+            connection_list.append(connection_tuple)
+        else:
+            print('\033[31munable to connect to :  host \033[0m', host[0], '\033[31m port  \033[0m', host[1])
+
+    for connection in connection_list:
+        action(connection)
