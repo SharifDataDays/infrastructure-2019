@@ -5,7 +5,7 @@ import string
 import sys
 
 from fabric import Connection
-
+import fabric
 
 class User:
     def __init__(self, username, password):
@@ -47,6 +47,7 @@ servers = []
 
 def main(server_info_path, servers_path: str = None):
     f = open(server_info_path, 'w+')
+    fabric.state.output.status = False
     if servers_path:
         server_file = fopen(server_info_path)
     # servers = json.load(server_file)
@@ -57,7 +58,7 @@ def main(server_info_path, servers_path: str = None):
         count += 1
         server_name = 'server' + str(count)
         server_info[server_name] = {}
-
+        print('\033[33mHost:\033[0m ' , str(host) , '\033[33m - Port:\033[0m ', str(port) , end='' )
         c = _startConnection(host=host, user=user, port=port)
         _initialize(c)
         
