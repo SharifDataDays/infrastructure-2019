@@ -14,18 +14,19 @@ class User:
 
 
 def _initialize(c):
+    c.run('rm -f test.py')
     c.run('pip install tensorflow --user')
     c.run('echo "import tensorflow" >> test.py') 
     c.run( 'echo "ses=tensorflow.Session()" >> test.py')
-    c.run('echo "import time"')
-    c.run('time.sleep(1)" >> test.py')
     c.run( 'echo "ses.close()" >> test.py')
     test_result = c.run('python3 test.py')
+
     print(test_result.exited)
     print(test_result.ok)
+
     c.run('rm test.py')
-    if 'Created TensorFlow device' in test_result:
-        print(c , ' -> ok')
+    if 'Created TensorFlow device' in str(test_result):
+        print('-> ok')
     else:
         print('shit happend')
 
