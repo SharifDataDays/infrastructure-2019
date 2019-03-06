@@ -8,12 +8,6 @@ from fabric import Connection
 import fabric
 
 def _initialize(c):
-    c.run('rm -f app.py')
-    c.run('pip install tensorflow --user')
-    c.run('echo "import tensorflow" >> app.py')
-    c.run( 'echo "ses=tensorflow.Session()" >> app.py')
-    c.run( 'echo "ses.close()" >> app.py')
-    test_result = c.run('python3 app.py')
 
     # print(test_result.exited)
     # print(test_result.ok)
@@ -23,11 +17,6 @@ def _initialize(c):
         print('\033[32m -------> ok\033[0m'')
     else:
         print('\033[31m -------> shit happend\033[0m')
-
-users = []
-server_info = {}
-servers = []
-
 
 def main(server_info_path, servers_path: str = None):
     f = open(server_info_path, 'w+')
