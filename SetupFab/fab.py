@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import json
 import random
 import string
@@ -17,6 +16,7 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+
 def _startConnection(host, user, port, password=None):
     c = Connection(host=host, user=user, port=port)
     return c
@@ -24,10 +24,8 @@ def _startConnection(host, user, port, password=None):
 
 def _initialize(c):
     c.run('pip install tensorflow --user')
-    c.run('echo "import tensorflow\nses=tensorflow.Session()\nimport time\ntime.sleep(1)\nses.close()" > test.py')
-    test_result = c.run('python3 test.py')
-    print(test_result.exited)
-    print(test_result.ok)
+    c.run('echo "import tensorflow\nses=tensorflow.Session()\nimport time\ntime.sleep(1)\nses.close()" > app.py')
+    test_result = c.run('python3 app.py')
     c.run('pip install jupyter notebook')
     c.run('apt install screen htop vim net-tools -y')
     c.run('apt install cmake libncurses5-dev libncursesw5-dev git -y;'
@@ -111,27 +109,3 @@ def main(server_info_path):
     f.close()
 
 
-if __name__ == '__main__':
-    args = sys.argv
-    if '-all' in args:
-        f = open(args[2], 'r')
-        server_info_path = args[3]
-        line = f.readline()
-        while line:
-            pars = line.split()
-            servers.append((pars[3].split('@')[1], pars[2],))
-            line = f.readline()
-    elif len(args) >= 3:
-        key = 1
-        while key < len(args) - 1:
-            servers.append((args[key], args[key + 1]))
-            key += 2
-        server_info_path = args[len(args) - 1]
-    else:                                                                    
-        print('''
-        -help
-        -all [remote_host_file] [added_users_file]
-        [remote_host remote_port ...] [added_users_file]
-        ''')
-        exit(0)
-    main(server_info_path)
