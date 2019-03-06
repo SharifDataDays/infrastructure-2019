@@ -121,7 +121,7 @@ if __name__ == '__main__':
             pars = line.split()
             servers.append((pars[3].split('@')[1], pars[2],))
             line = f.readline()
-    elif len(args) == 3:
+    elif len(args) >= 3:
         key = 1
         while key < len(args) - 1:
             servers.append((args[key], args[key + 1]))
