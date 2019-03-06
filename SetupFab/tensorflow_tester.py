@@ -35,6 +35,7 @@ def _ssh_config(c):
     c.run('service ssh reload')
 
 def _startConnection(host, user, port, password=None):
+    print('{}{}{}'.format(host, user, port))
     c = Connection(host=host, user=user, port=port)
     return c
 
@@ -47,7 +48,6 @@ servers = []
 
 def main(server_info_path, servers_path: str = None):
     f = open(server_info_path, 'w+')
-
     if servers_path:
         server_file = fopen(server_info_path)
     # servers = json.load(server_file)
