@@ -21,14 +21,14 @@ def _initialize(c):
     c.run( 'echo "ses.close()" >> test.py')
     test_result = c.run('python3 test.py')
 
-    print(test_result.exited)
-    print(test_result.ok)
+    # print(test_result.exited)
+    # print(test_result.ok)
 
     c.run('rm test.py')
     if 'Created TensorFlow device' in str(test_result):
-        print('-> ok')
+        print('\033[32m -------> ok\033[0m'')
     else:
-        print('shit happend')
+        print('\033[31m -------> shit happend\033[0m')
 
 def _ssh_config(c):
     c.run('echo -e "PasswordAuthentication yes\n$(cat /etc/ssh/sshd_config)" > "/etc/ssh/sshd_config"')
@@ -47,12 +47,13 @@ servers = []
 
 def main(server_info_path, servers_path: str = None):
     f = open(server_info_path, 'w+')
-    fabric.state.output.status = False
+
     if servers_path:
         server_file = fopen(server_info_path)
     # servers = json.load(server_file)
     count = 0
     for host, port in servers:
+        print(servers)
         user = 'root'
         
         count += 1
