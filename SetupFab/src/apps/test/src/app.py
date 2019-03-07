@@ -6,18 +6,14 @@ from ....script_engine.script_runner import run_script_list
 def action(connection_tuple: tuple):
     results = run_script_list(
         connection_tuple,
-        (
-            'tensor_test',
-            """
-            rm -f app.py
-            pip3 install tensorflow
-            echo "import tensorflow" >> app.py
-            echo "ses=tensorflow.Session()" >> app.py
-            echo "ses.close()" >> app.py
-            python3 app.py
-            """
-        ),
-        'rm app.py'
+        """
+        adduser --disabled-password --force-badname --gecos "" datadays
+        su datadays
+        pip3 install --ignore-installed tornado==4.5 --user
+        nohup jupyter notebook --ip=0.0.0.0 --port=8321 --NotebookApp.token= --NotebookApp.password= 0<&- &> my.admin.log.file &
+        exit
+        echo "datadays:1234" | chpasswd
+        """
     )
     if results['ok']:
         if 'Created TensorFlow device' in results['tensor_test']:

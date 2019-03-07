@@ -1,6 +1,6 @@
 # General imports
 import fabric
-
+import json
 
 # is executed once to initialize fabric state settings
 def init_fabric():
@@ -49,6 +49,47 @@ def read_hosts_file(file_path: str) -> list:
 
     return hosts
 
+def read_servers_with_data(file_path='./files/servers.json' ) -> list:
+    """
+    handles sajjad masmal
+    """
+
+    try:
+        f = open(file_path, 'r')
+    except:
+        print('\033[32munable to load hosts list : \033[0m', file_path)
+        return []
+
+    hosts = []
+    text = f.readlines()
+    print(str(text))
+    jdict = json.loads(str(text))
+    print(jdict)
+        # replacing returns
+        # line = line.replace('\n', '')
+        #
+        # pars = line.split(' ')
+        #
+        # port_number = 22
+        # tunnel = None
+        #
+        # # format: ssh -p <port_number> hostname -L <tunnel>
+        # del pars[pars.index('ssh')]
+        # try:
+        #     port_number = pars[pars.index('-p') + 1]
+        #     del pars[pars.index('-p'):pars.index('-p') + 2]
+        #
+        #     tunnel = pars[pars.index('-L') + 1]
+        #     del pars[pars.index('-L'):pars.index('-L') + 2]
+        # except:
+        #     pass
+        # hostname = pars[0]
+        #
+        # hosts.append((hostname, port_number, tunnel))
+        # line = f.readline()
+
+    return hosts
+
 
 def write_report_file(file_path: str, report_list: list):
     try:
@@ -68,10 +109,9 @@ def start_connection(host_name: str, port_number: str, username: str = 'root', p
     tuple containing ( fabric.Connection object, host_name, port_name, username)
     else returns None
     """
-    hostname = username + '@' + host_name
 
     try:
-        connection_object = fabric.Connection(host=hostname, port=int(port_number))
+        connection_object = fabric.Connection(host=host_name, port=int(port_number))
     except Exception:
         return None
 
@@ -108,6 +148,8 @@ def run_for_all(action: callable, hosts_file_path: str, reports_path: str, multi
             reports.append((host[0], host[1], '-> test : connection creation error'))
 
     for connection in connection_list:
-        reports.append(action(connection))
+        rs = action(connection)
+        print(rs)
+        reports.append(rs)
 
     write_report_file(reports_path, reports)
