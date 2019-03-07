@@ -22,12 +22,13 @@ def run_script_list(connection_tuple: tuple, *command_sets, list_results=True) -
         # running command set
         res = ''
         for command in commands:
+            command = command.strip()
+            if not command:
+                continue
+            print('\033[34m*\033[0m ', command)
             res = str(connection.run(command))
             try:
-                command = command.strip()
-                if not command:
-                    continue
-
+                pass
             except Exception:
                 results['ok'] = False
                 results['failed_command'] = command
